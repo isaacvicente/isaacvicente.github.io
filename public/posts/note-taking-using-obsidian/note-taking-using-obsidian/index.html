@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en-us"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content="In this blog post I explain the PARA method and how you should take notes using Obsidian"/>
+
+
+
+<title>
+    
+    Note-taking system using Obsidian and the PARA method | Isaac Vicente
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/note-taking-using-obsidian/note-taking-using-obsidian/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/note-taking-using-obsidian/note-taking-using-obsidian/">
+  <meta property="og:site_name" content="Isaac Vicente">
+  <meta property="og:title" content="Note-taking system using Obsidian and the PARA method">
+  <meta property="og:description" content="In this blog post I explain the PARA method and how you should take notes using Obsidian">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-07-13T11:53:11-03:00">
+    <meta property="article:modified_time" content="2024-07-13T11:53:11-03:00">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.92c3bf7119b98cfdc79e93f36a451eb901d8bbbfed7d75814e6436cf6c9085dc.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="auto">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Isaac Vicente</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">~</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/note-taking-using-obsidian/note-taking-using-obsidian/">Note-taking system using Obsidian and the PARA method</a></div>
+
+
+<div >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Note-taking system using Obsidian and the PARA method</h1>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="single-date">
+              <time datetime="2024-07-13T11:53:11-03:00">July 13, 2024</time>
+            </p>
+          </div>
+        </div>
+        
+    </header>
+    
+    <div class="single-content">
+      <h2 class="heading" id="introduction">
+  Introduction
+  <a class="anchor" href="#introduction">#</a>
+</h2>
+<p>I&rsquo;m the type of person that forget things easily (not <em>that</em> easily, but you
+know what&rsquo;s like) and sometimes I thought I need something to write down what
+I need to remember later. What I really need to remember I generally create an
+event in Google Calendar, so I don&rsquo;t miss it. But what about the new ideas
+I have? And the things I want to do? All these things I eventually forget and
+don&rsquo;t remember anymore. That&rsquo;s bad.</p>
+<p>But what I need to get started? Well, I really wanted the most frictionless way
+possible to create my notes and store it somewhere. I already tried
+<a href="https://www.notion.so/">Notion</a> (as everyone else tried, I think) and saw some
+productivity videos. Way too complicated. I needed something simpler.
+And that&rsquo;s where I found <a href="https://obsidian.md/">Obsidian</a>.</p>
+<p>What I like about Obsidian? Well, there&rsquo;s some advantages of using Obsidian
+over another note-taking app:</p>
+<ul>
+<li><strong>Markdown format</strong>: this is a big win for me, as Markdown is the most simple
+format to write text. In which format the READMEs are written in? You guessed
+it: Markdown. Also, I&rsquo;m able to write in any Markdown-compatible editor. In
+fact, I&rsquo;m writing this post in Vim :)</li>
+<li><strong>Ease of editing</strong>: It&rsquo;s really easy and simple to write notes in Obsidian.
+It formats the Markdown files the way I want.</li>
+<li><strong>Local files</strong>: Everything I write is stored as local files, not in the
+cloud. This way, who owns the knowledgement (i.e., the files) is me, not some
+company.</li>
+<li><strong>Portability</strong>: Obsidian also offers a mobile app. This way I cant write
+down what I need and see it later on my mobile phone. You can sync your
+computer with your phone using the paid service Obsidian offers. But you can
+sync your notes using something else. I&rsquo;m using
+<a href="https://docs.syncthing.net/intro/getting-started.html">Syncthing</a> to sync my
+notes between my laptop and my smartphone.</li>
+</ul>
+<blockquote>
+<p>I will write a post about syncing notes using Syncthing soon, so stay tuned.</p></blockquote>
+<h2 class="heading" id="para-method">
+  PARA method
+  <a class="anchor" href="#para-method">#</a>
+</h2>
+<p>The PARA method is a way of organizing your life and not just notes. It&rsquo;s
+a method created by Tiago Forte in his book <a href="https://a.co/d/cJWvCuL">Building a Second
+Brain</a>.</p>
+<p>PARA is an acronym for:</p>
+<ul>
+<li><strong>P</strong>rojects</li>
+<li><strong>A</strong>reas</li>
+<li><strong>R</strong>esources</li>
+<li><strong>A</strong>rchive</li>
+</ul>
+<h3 class="heading" id="projects">
+  Projects
+  <a class="anchor" href="#projects">#</a>
+</h3>
+<p>You can think of a <em>project</em> as an order of tasks that need to be done to
+achieve a certain goal. A project also has a clearly end state and a period of
+some months. For example, planning a vacation could be a project, as well as
+creating a blog.</p>
+<p>In the PARA method, there would be a &ldquo;Projects&rdquo; folder and you would collect
+information towards completing a certain goal (i.e., a <em>project</em>). To do so,
+you would write notes for your small tasks, could be a single note for
+a certain task or a lot of notes for another certain task, depending on the
+complexity of the task.</p>
+<h3 class="heading" id="areas">
+  Areas
+  <a class="anchor" href="#areas">#</a>
+</h3>
+<p>An area is a project that never ends. Think of an area as an area of your life,
+i.e., it envolves an ongoing engagement and will play a important role in your
+life. It can be: family, work, friends, your health.</p>
+<p>So, you can take notes on how you are doing or how you can do better. Actually,
+you can take a note of anything related to some of your areas.</p>
+<p>Realize that these folders can be moved into another folders. Maybe you want to
+buy a new house. It&rsquo;s just a plan with certain tasks. So, it fits better in the
+<em>Projects</em> folder. As time goes, you accomplish the tasks, and you bought the
+house. Now, you have to take care of it, and you don&rsquo;t know how much time
+you&rsquo;ll have the house. It&rsquo;s a project and has no end time. So, you can move
+this folder you named &ldquo;House&rdquo; to your <em>Areas</em> folder.</p>
+<h3 class="heading" id="resources">
+  Resources
+  <a class="anchor" href="#resources">#</a>
+</h3>
+<p>Resources are collections of information can be useful in the future, i.e.,
+they are references. Well, to give you an example, I used to gather this kind
+of information in my browser bookmarks. I have various collections of folders
+in my bookmarks, like <em>Linux</em>, <em>Programming</em>, <em>Animes/Manga</em>, etc. In the
+folder of Linux there are another folders related to Linux. These are all link
+I found useful and/or interesting. Don&rsquo;t know, maybe I will use it in the
+future or it&rsquo;ll be useful for someone else asking me for help.</p>
+<h3 class="heading" id="archive">
+  Archive
+  <a class="anchor" href="#archive">#</a>
+</h3>
+<p>This is where you place notes that are not useful currently or in the near
+future but you either don&rsquo;t want to throw them away.</p>
+<p>Imagine you have made a 3 years old note. You don&rsquo;t find it so useful anymore
+but, who knows, it can be useful in the future. So, it&rsquo;s an note you put in the
+<em>Archive</em> folder.</p>
+<p>Sometimes you will make an unexpected link between a note you are writing
+right now with this vary note you&rsquo;ve made 3 years ago, and this will be
+magical. It&rsquo;s also good to see how we evolved over time, what we used to
+thought back then, and how we think <em>now</em>.</p>
+<p>Also, you can move a <em>project</em> or even an <em>area</em> to the Archive folder, as it&rsquo;s
+something you don&rsquo;t really need anymore.</p>
+<h3 class="heading" id="extra-inbox">
+  Extra: Inbox
+  <a class="anchor" href="#extra-inbox">#</a>
+</h3>
+<p>Remember when I said that I wish something frictionless to write notes? Imagine
+you wrote a note. Where to put this note? Well, don&rsquo;t waste your time thinking
+this. If the folder it&rsquo;s not obvious, put it in the <em>Inbox</em> folder.</p>
+<p>The Inbox folder is the place you put a note you just made and know where it
+should be.</p>
+<p>Of course, later on, you have to take some time to think on where the notes on
+Inbox folder should be, so you don&rsquo;t accumulate a lot of notes in there. This
+way, you can take a note whenever you want and place it in the right place when
+you will have time to do so. Remember: it&rsquo;s your note-taking system, the
+importance of it is to take notes and not organize it the best way possible
+right away.</p>
+<h3 class="heading" id="structure-of-folders">
+  Structure of folders
+  <a class="anchor" href="#structure-of-folders">#</a>
+</h3>
+<p>In my Obsidian Vault (the <em>root</em> of your folders and files), I organize the
+folders like so:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>+ Obsidian Vault
+</span></span><span style="display:flex;"><span>  |
+</span></span><span style="display:flex;"><span>  +-- 0 Inbox
+</span></span><span style="display:flex;"><span>  +-- 1 Projects
+</span></span><span style="display:flex;"><span>  +-- 2 Areas
+</span></span><span style="display:flex;"><span>  +-- 3 Resources
+</span></span><span style="display:flex;"><span>  +-- 4 Archive
+</span></span></code></pre></div><p>As you can see, everything is under my <code>Obsidian Vault</code> and there are five
+folders bellow it. I&rsquo;ve numbered my folders so when I <code>ls</code> on the folders, they
+are on the order I want.</p>
+<h3 class="heading" id="pitfalls-and-principles">
+  Pitfalls and principles
+  <a class="anchor" href="#pitfalls-and-principles">#</a>
+</h3>
+<ul>
+<li><strong>Make decisions quickly</strong>: don&rsquo;t overthink, write a note and put it in the
+Inbox folder. If you know where the note should be, it shouldn&rsquo;t take more
+than 3 seconds to decide where it should be.</li>
+<li><strong>Avoid moving files around all the time</strong>: you will sometimes think: well,
+this note would be better here and there, and this one in there, and so on.
+It feels like productivity, but generally it&rsquo;s a waste of time. It&rsquo;s okay to do
+this rarely.</li>
+<li><strong>Your note-taking should be efficient to you</strong>: If you always overthink
+where a certain note should be, maybe you have to stop and reflect on what
+you want, and even maybe the PARA method is not for you. And that&rsquo;s ok. But
+give it a few months.</li>
+</ul>
+<h2 class="heading" id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The PARA method really help us organizing our notes as it grows. Obsidian, on
+the other hand, is by far the best Markdown editor available. Markdown is
+a dead simple format to learn, so take notes should not be a problem. The
+important thing is: take a note. That&rsquo;s just it.</p>
+<p>I&rsquo;m myself a beginner on this: on both taking notes and doing it on Obsidian.
+I wrote this blog so I can reference and know what I should be doing. It&rsquo;s also
+a way of taking notes, because the posts themselves are written in Markdown.</p>
+<blockquote>
+<p>Note: I&rsquo;m not a English-native speaker, so maybe there are some typos I&rsquo;ve
+made.</p></blockquote>
+<h2 class="heading" id="links">
+  Links
+  <a class="anchor" href="#links">#</a>
+</h2>
+<p>I highly recommend you to check out these links:</p>
+<ul>
+<li><a href="https://youtu.be/oxUVn37-Igk?si=S0kjK8jslyoLRLJk">(video) Note-taking with the PARA method - Best for Beginners</a></li>
+<li><a href="https://help.obsidian.md/Home">(docs) Obdisian Help</a></li>
+</ul>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>

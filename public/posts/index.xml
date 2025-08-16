@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Isaac Vicente</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on Isaac Vicente</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 13 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Note-taking system using Obsidian and the PARA method</title>
+      <link>http://localhost:1313/posts/note-taking-using-obsidian/</link>
+      <pubDate>Sat, 13 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/note-taking-using-obsidian/</guid>
+      <description>In this blog post I explain the PARA method and how you should take notes using Obsidian</description>
+    </item>
+  </channel>
+</rss>
