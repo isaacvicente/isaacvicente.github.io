@@ -49,7 +49,7 @@ jobs:
           mv ${{ runner.temp }}/dart-sass/ /usr/local/bin
           echo "/usr/local/bin/dart-sass" >> $GITHUB_PATH
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: recursive
           fetch-depth: 0
