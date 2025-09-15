@@ -13,9 +13,9 @@ readTime: true
 O Magnum é o serviço nativo do Openstack para orquestração de containers e
 oferece suporte ao Kubernetes como orquestrador de containers.
 
-O Cluster API (CAPI) é um projeto do Kubernetes para simplificar o deploy e
-gerência de clusters k8s, e oferece suporte a vários _cloud providers_,
-incluindo o Openstack.
+O [Cluster API (CAPI)](https://cluster-api.sigs.k8s.io/) é um projeto do
+Kubernetes para simplificar o deploy e gerência de clusters k8s, e oferece
+suporte a vários _cloud providers_, incluindo o Openstack.
 
 É possível utilizar o CAPI junto ao Openstack sem a necessidade do Magnum.
 Porém, nesse post irei introduzir o uso do CAPI junto ao Magnum. Dessa forma,
@@ -53,11 +53,11 @@ vim k3s.yaml
 ```
 
 Edite o arquivo e mude o endereço de servidor para o IP do nó de cluster de gerenciamento.
-No meu caso, mudei de `127.0.0.1` (`localhost`) para `13.5.12.11`.
+Por exemplo, mude de `127.0.0.1` (`localhost`) para `10.0.0.11`.
 
 ```diff
 -    server: 127.0.0.1:6443
-+    server: 13.5.12.11:6443
++    server: 10.0.0.11:6443
 ```
 
 Agora, use o arquivo para acessar o cluster.
@@ -199,8 +199,8 @@ transparente, criar clusters baseados nos templates definidos.
 
 ## Referências
 
+* <https://cluster-api.sigs.k8s.io/>
 * <https://www.roksblog.de/openstack-magnum-cluster-api-driver/>
-* <https://cluster-api.sigs.k8s.io/user/quick-start#initialization-for-common-providers>
 * <https://vexxhost.github.io/magnum-cluster-api/user/getting-started/>
 * <https://vexxhost.github.io/magnum-cluster-api/admin/troubleshooting/>
 * <https://www.stackhpc.com/magnum-clusterapi.html>
