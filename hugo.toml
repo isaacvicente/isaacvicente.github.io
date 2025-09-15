@@ -72,13 +72,13 @@ style = 'algol'
   [caches.images]
     dir = ':cacheDir/images'
 
-# # Giscus comments
-# [params.giscus]
-# enable = false
-# repo = "user/repo"
-# repoid = "repoId"
-# category = "General"
-# categoryid = "categoryId"
-# mapping = "pathname"
-# theme = "preferred_color_scheme"
-#
+defaultContentLanguage = 'en'
+[languages]
+  [languages.en]
+    contentDir = 'content/en'
+    languageName = 'English'
+    weight = 1
+  [languages.br]
+    contentDir = 'content/br'
+    languageName = 'Português'
+    weight = 2

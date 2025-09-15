@@ -5,22 +5,22 @@
     <link>http://localhost:1313/</link>
     <description>Recent content in Home on Isaac Vicente</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 13 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <language>en</language>
+    <lastBuildDate>Mon, 15 Sep 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Magnum &#43; Cluster API</title>
+      <link>http://localhost:1313/posts/deploy-magnum-with-cluster-api/</link>
+      <pubDate>Mon, 15 Sep 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/deploy-magnum-with-cluster-api/</guid>
+      <description>In this post, I detail how to install Magnum with the Cluster API to create clusters in Openstack.</description>
+    </item>
     <item>
       <title>Note-taking system using Obsidian and the PARA method</title>
       <link>http://localhost:1313/posts/note-taking-using-obsidian/</link>
       <pubDate>Sat, 13 Jul 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/note-taking-using-obsidian/</guid>
       <description>In this blog post I explain the PARA method and how you should take notes using Obsidian</description>
-    </item>
-    <item>
-      <title>About</title>
-      <link>http://localhost:1313/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/about/</guid>
-      <description>&lt;p&gt;I&amp;rsquo;m a Computer Science student at &lt;a href=&#34;https://www.computacao.ufcg.edu.br/&#34;&gt;UFCG&lt;/a&gt;&#xA;and a DevOps Engineer at Distributed System Laboratory (or LSD, in Portuguese),&#xA;located in my university.&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;m passionate about Linux, Virtualization, Automation and the whole IT field.&#xA;In fact, what brought me to where I&amp;rsquo;m working was the passion I have for Linux and&#xA;everything that surrounds it, like living in the terminal.&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Check out my &lt;a href=&#34;https://github.com/isaacvicente/dotfiles&#34;&gt;dotfiles repo&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;I also love Math and the Human field (History, Philosophy, Sociology, etc).&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
