@@ -63,6 +63,15 @@ url = "/posts"
 name = "about"
 url = "/about"
 
+[params.giscus]
+enable = true
+repo = "isaacvicente/isaacvicente.github.io"
+repoid = "R_kgDOPbfbhw"
+category = "Announcements"
+categoryid = "DIC_kwDOPbfbh84Cvfdp"
+mapping = "pathname"
+theme = "preferred_color_scheme" 
+
 # Syntax highlight on code blocks
 [markup]
 [markup.highlight]

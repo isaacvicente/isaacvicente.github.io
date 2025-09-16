@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="br"
+<html lang="en"
   dir="ltr">
 
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
@@ -36,15 +36,15 @@
     
 </title>
 
-<link rel="canonical" href="http://localhost:1313/br/posts/deploy-magnum-with-cluster-api/"/>
+<link rel="canonical" href="http://localhost:1313/en/posts/deploy-magnum-with-cluster-api/"/>
 
-<meta property="og:url" content="http://localhost:1313/br/posts/deploy-magnum-with-cluster-api/">
+<meta property="og:url" content="http://localhost:1313/en/posts/deploy-magnum-with-cluster-api/">
   <meta property="og:site_name" content="Isaac Vicente">
   <meta property="og:title" content="Magnum &#43; Cluster API">
-  <meta property="og:description" content="Nesse post detalho a instalação do Magnum junto ao Cluster API para criação de clusters no Openstack">
-  <meta property="og:locale" content="br">
+  <meta property="og:description" content="In this post, I detail how to install Magnum with the Cluster API to create clusters in Openstack.">
+  <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
+    <meta property="article:section" content="en">
     <meta property="article:published_time" content="2025-09-15T00:00:00+00:00">
     <meta property="article:modified_time" content="2025-09-15T00:00:00+00:00">
 
@@ -142,8 +142,8 @@
 
 
 
-<div class="breadcrumbs"><a href="/br/">~</a><span class="breadcrumbs-separator">/</span><a href="/br/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
-        <a href="/br/posts/deploy-magnum-with-cluster-api/">Magnum &#43; Cluster API</a></div>
+<div class="breadcrumbs"><a href="/">~</a><span class="breadcrumbs-separator">/</span><a href="/en/">Ens</a><span class="breadcrumbs-separator">/</span>
+        <a href="/en/posts/deploy-magnum-with-cluster-api/">Magnum &#43; Cluster API</a></div>
 
 
 <div >
@@ -151,14 +151,14 @@
     <header class="single-intro-container">
         
         <h1 class="single-title">Magnum &#43; Cluster API</h1>
-        <p class="single-summary">Nesse post detalho a instalação do Magnum junto ao Cluster API para criação de clusters no Openstack</p>
+        <p class="single-summary">In this post, I detail how to install Magnum with the Cluster API to create clusters in Openstack.</p>
         
         <div class="single-subsummary">
           
           <div>
             
             <p class="single-date">
-              <time datetime="2025-09-15T00:00:00&#43;00:00">15 Gwengolo 2025</time>
+              <time datetime="2025-09-15T00:00:00&#43;00:00">September 15, 2025</time>
               &nbsp; · &nbsp;4 min read
             </p>
           </div>
@@ -171,21 +171,21 @@
   <ul>
     <li><a href="#k3s">k3s</a>
       <ul>
-        <li><a href="#instalação-do-k3s">Instalação do k3s</a></li>
-        <li><a href="#acessando-cluster-k3s">Acessando cluster k3s</a></li>
+        <li><a href="#installing-k3s">Installing k3s</a></li>
+        <li><a href="#accessing-the-k3s-cluster">Accessing the k3s cluster</a></li>
       </ul>
     </li>
-    <li><a href="#instalação-do-capi-no-cluster">Instalação do CAPI no cluster</a></li>
-    <li><a href="#configurando-o-magnum">Configurando o Magnum</a>
+    <li><a href="#installing-capi-on-the-cluster">Installing CAPI on the cluster</a></li>
+    <li><a href="#configuring-magnum">Configuring Magnum</a>
       <ul>
-        <li><a href="#deploy-do-magnum-usando-kolla">Deploy do Magnum usando <code>kolla</code></a></li>
-        <li><a href="#download-de-imagem-compatível-com-o-capi">Download de imagem compatível com o CAPI</a></li>
+        <li><a href="#deploy-magnum-using-kolla">Deploy Magnum using <code>kolla</code></a></li>
+        <li><a href="#downloading-a-capi-compatible-image">Downloading a CAPI-compatible image</a></li>
       </ul>
     </li>
-    <li><a href="#criação-de-template">Criação de template</a></li>
-    <li><a href="#criando-um-cluster">Criando um cluster</a></li>
-    <li><a href="#conclusão">Conclusão</a></li>
-    <li><a href="#referências">Referências</a></li>
+    <li><a href="#creating-a-template">Creating a template</a></li>
+    <li><a href="#creating-a-cluster">Creating a cluster</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#references">References</a></li>
   </ul>
 </nav>
       </aside>
@@ -213,7 +213,7 @@
 <figure class=" img-small">
 
     <div class="img-container" style="--w: 609; --h: 378;">
-        <img loading="lazy" alt="Magnum shark with Cluster API turtles" src="/br/posts/deploy-magnum-with-cluster-api/clusterapi-magnum.png#small" width="609" height="378">
+        <img loading="lazy" alt="Magnum shark with Cluster API turtles" src="/en/posts/deploy-magnum-with-cluster-api/clusterapi-magnum.png#small" width="609" height="378">
     </div>
 
     
@@ -223,115 +223,113 @@
     
 </figure>
 </p>
-<p>O Magnum é o serviço nativo do Openstack para orquestração de containers e
-oferece suporte ao Kubernetes como orquestrador de containers.</p>
-<p>O <a href="https://cluster-api.sigs.k8s.io/">Cluster API (CAPI)</a> é um projeto do
-Kubernetes para simplificar o deploy e gerência de clusters k8s, e oferece
-suporte a vários <em>cloud providers</em>, incluindo o Openstack.</p>
-<p>É possível utilizar o CAPI junto ao Openstack sem a necessidade do Magnum.
-Porém, nesse post irei introduzir o uso do CAPI junto ao Magnum. Dessa forma,
-podemos criar vários clusters baseados em templates definidos sem nos
-procuparmos sobre como as coisas estão funcionando de baixo dos panos. Com isso
-teremos uma oferta de Cluster as a Service (CaaS).</p>
+<p>Magnum is Openstack&rsquo;s native service for container orchestration and
+supports Kubernetes as a container orchestrator.</p>
+<p>The <a href="https://cluster-api.sigs.k8s.io/">Cluster API (CAPI)</a> is a Kubernetes
+project to simplify the deployment and management of k8s clusters, and supports
+several cloud providers, including Openstack.</p>
+<p>It is possible to use CAPI with Openstack without needing Magnum. However, in
+this post, I will introduce the use of CAPI with Magnum. This way, we can
+create multiple clusters based on defined templates without having to worry
+about how things are working under the hood. This will provide a Cluster as a
+Service (CaaS) offering.</p>
 <h2 class="heading" id="k3s">
   k3s
   <a class="anchor" href="#k3s">#</a>
 </h2>
-<p>Para o cluster de gerência, isto é, o cluster do CAPI, iremos utilizar o
+<p>For the management cluster, that is, the CAPI cluster, we will use
 <a href="https://docs.k3s.io/">k3s</a>.</p>
-<p>Siga a <a href="https://docs.k3s.io/quick-start">documetação oficial</a>
-do k3s para instalação.</p>
-<h3 class="heading" id="instalação-do-k3s">
-  Instalação do k3s
-  <a class="anchor" href="#instala%c3%a7%c3%a3o-do-k3s">#</a>
+<p>Follow the official <a href="https://docs.k3s.io/quick-start">k3s documentation</a>
+for installation.</p>
+<h3 class="heading" id="installing-k3s">
+  Installing k3s
+  <a class="anchor" href="#installing-k3s">#</a>
 </h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -sfL https://get.k3s.io | sh -
-</span></span></code></pre></div><h3 class="heading" id="acessando-cluster-k3s">
-  Acessando cluster k3s
-  <a class="anchor" href="#acessando-cluster-k3s">#</a>
+</span></span></code></pre></div><h3 class="heading" id="accessing-the-k3s-cluster">
+  Accessing the k3s cluster
+  <a class="anchor" href="#accessing-the-k3s-cluster">#</a>
 </h3>
-<p>Por padrão, o arquivo de configuração do k3s fica em
-<code>/etc/rancher/k3s/k3s.yaml</code>. Nesse sentido, precisamos fazer uma mudança na
-configuração.</p>
-<p>Primeiro, faça uma cópia do arquivo para onde você está e o edite:</p>
+<p>By default, the k3s configuration file is located at
+<code>/etc/rancher/k3s/k3s.yaml</code>. Therefore, we need to make a configuration change.</p>
+<p>First, make a copy of the file to your current location and edit it:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo cp /etc/rancher/k3s/k3s.yaml .
-</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Mude as permissões do arquivo para pode acessá-lo como usuário atual</span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Change the file permissions so you can access it as the current user</span>
 </span></span><span style="display:flex;"><span>sudo chown &lt;user&gt;:&lt;group&gt; k3s.yaml
 </span></span><span style="display:flex;"><span>vim k3s.yaml
-</span></span></code></pre></div><p>Edite o arquivo e mude o endereço de servidor para o IP do nó de cluster de gerenciamento.
-Por exemplo, mude de <code>127.0.0.1</code> (<code>localhost</code>) para <code>10.0.0.11</code>.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>-    server: 127.0.0.1:6443
-</span></span><span style="display:flex;"><span>+    server: 10.0.0.11:6443
-</span></span></code></pre></div><p>Agora, use o arquivo para acessar o cluster.</p>
+</span></span></code></pre></div><p>Edit the file and change the server address to the IP of the management cluster node.
+For example, change it from <code>127.0.0.1</code> (<code>localhost</code>) to <code>10.0.0.11</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>- server: 127.0.0.1:6443
+</span></span><span style="display:flex;"><span>+ server: 10.0.0.11:6443
+</span></span></code></pre></div><p>Now, use the file to access the cluster.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">KUBECONFIG</span>=k3s.yml
-</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Liste todos os pods para testar a conectividade</span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># List all pods to test connectivity</span>
 </span></span><span style="display:flex;"><span>kubectl get pods -A
-</span></span></code></pre></div><h2 class="heading" id="instalação-do-capi-no-cluster">
-  Instalação do CAPI no cluster
-  <a class="anchor" href="#instala%c3%a7%c3%a3o-do-capi-no-cluster">#</a>
+</span></span></code></pre></div><h2 class="heading" id="installing-capi-on-the-cluster">
+  Installing CAPI on the cluster
+  <a class="anchor" href="#installing-capi-on-the-cluster">#</a>
 </h2>
-<p>O Cluster API fornece uma ótima
-<a href="https://cluster-api.sigs.k8s.io/user/quick-start">documetação</a> sobre como
-instalar e testar o CAPI.</p>
-<p>Instale o <code>clusterctl</code> no nó de deploy.</p>
+<p>The Cluster API provides great
+<a href="https://cluster-api.sigs.k8s.io/user/quick-start">documentation</a> on how to
+install and test CAPI.</p>
+<p>Install <code>clusterctl</code> on the deploy node.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.11.1/clusterctl-linux-amd64 -o clusterctl
 </span></span><span style="display:flex;"><span>sudo install -o root -g root -m 0755 clusterctl /usr/local/bin/clusterctl
-</span></span></code></pre></div><p>Para verificar que o clusterctl está na última versão rode</p>
+</span></span></code></pre></div><p>To verify that clusterctl is the latest version, run</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>clusterctl version
-</span></span></code></pre></div><p>Antes de inicializar o <code>clusterctl</code> para o provider Openstack, exporte essa
-variável.</p>
+</span></span></code></pre></div><p>Before initializing <code>clusterctl</code> for the Openstack provider, export this
+variable.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_TOPOLOGY</span>=<span style="font-weight:bold;font-style:italic">true</span>
-</span></span></code></pre></div><p>Agora, inicialize o provider do Openstack</p>
+</span></span></code></pre></div><p>Now, initialize the Openstack provider.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Install ORC (needed for CAPO &gt;=v0.12)</span>
 </span></span><span style="display:flex;"><span>kubectl apply -f https://github.com/k-orc/openstack-resource-controller/releases/latest/download/install.yaml
 </span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Initialize the management cluster</span>
 </span></span><span style="display:flex;"><span>clusterctl init --infrastructure openstack
-</span></span></code></pre></div><h2 class="heading" id="configurando-o-magnum">
-  Configurando o Magnum
-  <a class="anchor" href="#configurando-o-magnum">#</a>
+</span></span></code></pre></div><h2 class="heading" id="configuring-magnum">
+  Configuring Magnum
+  <a class="anchor" href="#configuring-magnum">#</a>
 </h2>
-<h3 class="heading" id="deploy-do-magnum-usando-kolla">
-  Deploy do Magnum usando <code>kolla</code>
-  <a class="anchor" href="#deploy-do-magnum-usando-kolla">#</a>
+<h3 class="heading" id="deploy-magnum-using-kolla">
+  Deploy Magnum using <code>kolla</code>
+  <a class="anchor" href="#deploy-magnum-using-kolla">#</a>
 </h3>
-<p>Edite o arquivo <code>globals.yaml</code> em <code>/etc/kolla/</code>.</p>
+<p>Edit the <code>globals.yaml</code> file in <code>/etc/kolla/</code>.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># globals.yaml</span>
 </span></span><span style="display:flex;"><span>enable_magnum: <span style="font-weight:bold;text-decoration:underline">true</span>
 </span></span><span style="display:flex;"><span>enable_cluster_user_trust: <span style="font-weight:bold;text-decoration:underline">true</span>
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kolla-ansible deploy -i &lt;inventory&gt; --tags common,horizon,magnum
-</span></span></code></pre></div><p>Agora, precisamos configurar o Magnum para utilizar o Cluster API para criar os clusters.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Crie o diretório de configuração do Magnum</span>
+</span></span></code></pre></div><p>Now, we need to configure Magnum to use the Cluster API to create the clusters.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Create the Magnum configuration directory</span>
 </span></span><span style="display:flex;"><span>mkdir -p /etc/kolla/config/magnum
-</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Copie o k3s.yaml como arquivo de kubeconfig para o Magnum utilizar</span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># Copy k3s.yaml as the kubeconfig file for Magnum to use</span>
 </span></span><span style="display:flex;"><span>cp k3s.yaml /etc/kolla/config/magnum/kubeconfig
-</span></span></code></pre></div><p>Reconfigure o Magnum para utilizar desse arquivo e se autenticar com o cluster
-de gerência do Cluster API.</p>
+</span></span></code></pre></div><p>Reconfigure Magnum to use this file and authenticate with the Cluster API
+management cluster.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kolla-ansible reconfigure -i &lt;inventory&gt; --tags magnum
-</span></span></code></pre></div><h3 class="heading" id="download-de-imagem-compatível-com-o-capi">
-  Download de imagem compatível com o CAPI
-  <a class="anchor" href="#download-de-imagem-compat%c3%advel-com-o-capi">#</a>
+</span></span></code></pre></div><h3 class="heading" id="downloading-a-capi-compatible-image">
+  Downloading a CAPI-compatible image
+  <a class="anchor" href="#downloading-a-capi-compatible-image">#</a>
 </h3>
-<p>É necessário ter pelo menos uma imagem compatível com o Cluster API no Openstack.</p>
-<p>Para isso, teremos que baixar a imagem e subí-la no Openstack.</p>
-<p>A seguir, baixamos uma imagem compatível Ubuntu 22.04 e a enviamos ao Openstack.
-A versão do Kubernetes utilizada aqui é a <code>v1.27.4</code>.</p>
+<p>You must have at least one Cluster API-compatible image in Openstack.</p>
+<p>To do this, we&rsquo;ll need to download the image and upload it to Openstack.</p>
+<p>Next, we download a compatible Ubuntu 22.04 image and upload it to Openstack.
+The Kubernetes version used here is <code>v1.27.4</code>.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">OS_DISTRO</span>=ubuntu <span style="color:#888;font-style:italic"># you can change this to &#34;flatcar&#34; if you want to use Flatcar</span>
 </span></span><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">for</span> version in v1.27.4; <span style="font-weight:bold;text-decoration:underline">do</span> <span style="color:#666;font-style:italic">\
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  [[ <span style="color:#666;font-style:italic">&#34;</span><span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">OS_DISTRO</span><span style="color:#666;font-style:italic">}</span><span style="color:#666;font-style:italic">&#34;</span> == <span style="color:#666;font-style:italic">&#34;ubuntu&#34;</span> ]] &amp;&amp; <span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span>=<span style="color:#666;font-style:italic">&#34;ubuntu-2204-kube-</span><span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">version</span><span style="color:#666;font-style:italic">}</span><span style="color:#666;font-style:italic">&#34;</span> || <span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span>=<span style="color:#666;font-style:italic">&#34;flatcar-kube-</span><span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">version</span><span style="color:#666;font-style:italic">}</span><span style="color:#666;font-style:italic">&#34;</span>; <span style="color:#666;font-style:italic">\
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  curl -LO https://object-storage.public.mtl1.vexxhost.net/swift/v1/a91f106f55e64246babde7402c21b87a/magnum-capi/<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span><span style="color:#666;font-style:italic">}</span>.qcow2; <span style="color:#666;font-style:italic">\
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  openstack image create <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span><span style="color:#666;font-style:italic">}</span> --disk-format=qcow2 --container-format=bare --property <span style="color:#666;font-weight:bold;font-style:italic">os_distro</span>=<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">OS_DISTRO</span><span style="color:#666;font-style:italic">}</span> --file=<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span><span style="color:#666;font-style:italic">}</span>.qcow2;
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>[[ <span style="color:#666;font-style:italic">&#34;</span><span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">OS_DISTRO</span><span style="color:#666;font-style:italic">}</span><span style="color:#666;font-style:italic">&#34;</span> == <span style="color:#666;font-style:italic">&#34;ubuntu&#34;</span> ]] &amp;&amp; <span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span>=<span style="color:#666;font-style:italic">&#34;ubuntu-22.04-kube-</span><span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">version</span><span style="color:#666;font-style:italic">}</span><span style="color:#666;font-style:italic">&#34;</span> || <span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span>=<span style="color:#666;font-style:italic">&#34;flatcar-kube-</span><span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">version</span><span style="color:#666;font-style:italic">}</span><span style="color:#666;font-style:italic">&#34;</span>; <span style="color:#666;font-style:italic">\ </span>
+</span></span><span style="display:flex;"><span>curl -LO https://object-storage.public.mtl1.vexxhost.net/swift/v1/a91f106f55e64246babde7402c21b87a/magnum-capi/<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span><span style="color:#666;font-style:italic">}</span>.qcow2; <span style="color:#666;font-style:italic">\ </span>
+</span></span><span style="display:flex;"><span>openstack image create <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span><span style="color:#666;font-style:italic">}</span> --disk-format=qcow2 --container-format=bare --property <span style="color:#666;font-weight:bold;font-style:italic">os_distro</span>=<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">OS_DISTRO</span><span style="color:#666;font-style:italic">}</span> --file=<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">IMAGE_NAME</span><span style="color:#666;font-style:italic">}</span>.qcow2;
 </span></span><span style="display:flex;"><span><span style="font-weight:bold;text-decoration:underline">done</span>;
-</span></span></code></pre></div><h2 class="heading" id="criação-de-template">
-  Criação de template
-  <a class="anchor" href="#cria%c3%a7%c3%a3o-de-template">#</a>
+</span></span></code></pre></div><h2 class="heading" id="creating-a-template">
+  Creating a template
+  <a class="anchor" href="#creating-a-template">#</a>
 </h2>
 <blockquote>
-<p>Requisitos:</p>
+<p>Requirements:</p>
 <ol>
-<li>Carregar as variáveis de ambiente de admin do Openstack</li>
-<li>Ter o client do Magnum baixado no ambiente (<code>pip install python-magnumclient</code>)</li>
-<li>Para a criação de um template do Magnum, é necessário ter uma rede
-externa, aqui como <code>external</code></li>
+<li>Load the Openstack admin environment variables</li>
+<li>Have the Magnum client downloaded to the environment (<code>pip install python-magnumclient</code>)</li>
+<li>To create a Magnum template, you must have an external network, here as <code>external</code></li>
 </ol></blockquote>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">version</span>=v1.27.4
 </span></span><span style="display:flex;"><span>openstack coe cluster template create <span style="color:#666;font-style:italic">\
@@ -346,27 +344,27 @@ externa, aqui como <code>external</code></li>
 </span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    --coe kubernetes <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    --label <span style="color:#666;font-weight:bold;font-style:italic">kube_tag</span>=<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">version</span><span style="color:#666;font-style:italic">}</span>,availibilty_zone=nova <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    k8s-<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">version</span><span style="color:#666;font-style:italic">}</span>;
-</span></span></code></pre></div><h2 class="heading" id="criando-um-cluster">
-  Criando um cluster
-  <a class="anchor" href="#criando-um-cluster">#</a>
+</span></span></code></pre></div><h2 class="heading" id="creating-a-cluster">
+  Creating a cluster
+  <a class="anchor" href="#creating-a-cluster">#</a>
 </h2>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>openstack coe cluster create <span style="color:#666;font-style:italic">\
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  --cluster-template k8s-v1.27.4 <span style="color:#666;font-style:italic">\
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  --master-count 1 <span style="color:#666;font-style:italic">\
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  --node-count 1 <span style="color:#666;font-style:italic">\
-</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>  k8s-v1.27.4
-</span></span></code></pre></div><p>Esse comando cria um cluster de nome <code>k8s-v1.27.4</code> com 1 nó de controle e 1 nó
-de trabalho.</p>
-<h2 class="heading" id="conclusão">
-  Conclusão
-  <a class="anchor" href="#conclus%c3%a3o">#</a>
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    --cluster-template k8s-v1.27.4 <span style="color:#666;font-style:italic">\
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    --master-count 1 <span style="color:#666;font-style:italic">\
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    --node-count 1 <span style="color:#666;font-style:italic">\
+</span></span></span><span style="display:flex;"><span><span style="color:#666;font-style:italic"></span>    k8s-v1.27.4
+</span></span></code></pre></div><p>This command creates a cluster named <code>k8s-v1.27.4</code> with 1 control node and 1
+worker node.</p>
+<h2 class="heading" id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
 </h2>
-<p>Com isso, temos um cluster k8s funcionando e acessível. Podemos então expor
-esse template cluster como público para os usuários da cloud poderem, de forma
-transparente, criar clusters baseados nos templates definidos.</p>
-<h2 class="heading" id="referências">
-  Referências
-  <a class="anchor" href="#refer%c3%aancias">#</a>
+<p>With this, we have a working and accessible k8s cluster. We can then expose
+this cluster template as public so that cloud users can transparently create
+clusters based on the defined templates.</p>
+<h2 class="heading" id="references">
+  References
+  <a class="anchor" href="#references">#</a>
 </h2>
 <ul>
 <li><a href="https://cluster-api.sigs.k8s.io/">https://cluster-api.sigs.k8s.io/</a></li>
@@ -417,7 +415,7 @@ transparente, criar clusters baseados nos templates definidos.</p>
             <div class="single-pagination-container-prev">
                 <div class="single-pagination-text">←</div>
                 <div class="single-pagination-text">
-                    <a href="/br/posts/note-taking-using-obsidian/">
+                    <a href="/en/posts/note-taking-using-obsidian/">
                         Note-taking system using Obsidian and the PARA method
                     </a>
                 </div>

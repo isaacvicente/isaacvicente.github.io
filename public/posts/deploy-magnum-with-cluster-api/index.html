@@ -225,9 +225,9 @@
 </p>
 <p>Magnum is Openstack&rsquo;s native service for container orchestration and
 supports Kubernetes as a container orchestrator.</p>
-<p>The Cluster API (CAPI) is a Kubernetes project to simplify the deployment and
-management of k8s clusters, and supports several cloud providers,
-including Openstack.</p>
+<p>The <a href="https://cluster-api.sigs.k8s.io/">Cluster API (CAPI)</a> is a Kubernetes
+project to simplify the deployment and management of k8s clusters, and supports
+several cloud providers, including Openstack.</p>
 <p>It is possible to use CAPI with Openstack without needing Magnum. However, in
 this post, I will introduce the use of CAPI with Magnum. This way, we can
 create multiple clusters based on defined templates without having to worry
@@ -258,9 +258,9 @@ for installation.</p>
 </span></span><span style="display:flex;"><span>sudo chown &lt;user&gt;:&lt;group&gt; k3s.yaml
 </span></span><span style="display:flex;"><span>vim k3s.yaml
 </span></span></code></pre></div><p>Edit the file and change the server address to the IP of the management cluster node.
-In my case, I changed it from <code>127.0.0.1</code> (<code>localhost</code>) to <code>13.5.12.11</code>.</p>
+For example, change it from <code>127.0.0.1</code> (<code>localhost</code>) to <code>10.0.0.11</code>.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span>- server: 127.0.0.1:6443
-</span></span><span style="display:flex;"><span>+ server: 13.5.12.11:6443
+</span></span><span style="display:flex;"><span>+ server: 10.0.0.11:6443
 </span></span></code></pre></div><p>Now, use the file to access the cluster.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">KUBECONFIG</span>=k3s.yml
 </span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># List all pods to test connectivity</span>
@@ -367,8 +367,8 @@ clusters based on the defined templates.</p>
   <a class="anchor" href="#references">#</a>
 </h2>
 <ul>
+<li><a href="https://cluster-api.sigs.k8s.io/">https://cluster-api.sigs.k8s.io/</a></li>
 <li><a href="https://www.roksblog.de/openstack-magnum-cluster-api-driver/">https://www.roksblog.de/openstack-magnum-cluster-api-driver/</a></li>
-<li><a href="https://cluster-api.sigs.k8s.io/user/quick-start#initialization-for-common-providers">https://cluster-api.sigs.k8s.io/user/quick-start#initialization-for-common-providers</a></li>
 <li><a href="https://vexxhost.github.io/magnum-cluster-api/user/getting-started/">https://vexxhost.github.io/magnum-cluster-api/user/getting-started/</a></li>
 <li><a href="https://vexxhost.github.io/magnum-cluster-api/admin/troubleshooting/">https://vexxhost.github.io/magnum-cluster-api/admin/troubleshooting/</a></li>
 <li><a href="https://www.stackhpc.com/magnum-clusterapi.html">https://www.stackhpc.com/magnum-clusterapi.html</a></li>
@@ -378,6 +378,25 @@ clusters based on the defined templates.</p>
 
     </div>
   </article>
+    <div class="single-comments">
+      <script src="https://giscus.app/client.js"
+        data-repo="isaacvicente/isaacvicente.github.io"
+        data-repo-id="R_kgDOPbfbhw"
+        data-category=""
+        data-category-id="DIC_kwDOPbfbh84Cvfdp"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+
+    </div>
 
   
 
