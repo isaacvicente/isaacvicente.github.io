@@ -172,7 +172,7 @@ openstack coe cluster template create \
     --network-driver calico \
     --docker-storage-driver overlay2 \
     --coe kubernetes \
-    --label kube_tag=${version},availibilty_zone=nova \
+    --label kube_tag=${version},availability_zone=nova \
     k8s-${version};
 ```
 
