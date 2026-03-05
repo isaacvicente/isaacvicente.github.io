@@ -1,1 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Note-Taking on Isaac Vicente</title><link>https://isaacvicente.github.io/pt-br/tags/note-taking/</link><description>Recent content in Note-Taking on Isaac Vicente</description><generator>Hugo -- gohugo.io</generator><language>pt-br</language><copyright>© 2026 Isaac Vicente</copyright><lastBuildDate>Sat, 13 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://isaacvicente.github.io/pt-br/tags/note-taking/index.xml" rel="self" type="application/rss+xml"/><item><title>Sistema de anotações usando Obsidian e o método PARA</title><link>https://isaacvicente.github.io/pt-br/posts/note-taking-using-obsidian/</link><pubDate>Sat, 13 Jul 2024 00:00:00 +0000</pubDate><guid>https://isaacvicente.github.io/pt-br/posts/note-taking-using-obsidian/</guid><description>Neste post explico o método PARA e como você pode fazer anotações usando o Obsidian</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Note-Taking on Isaac Vicente</title>
+    <link>http://localhost:56733/pt-br/tags/note-taking/</link>
+    <description>Recent content in Note-Taking on Isaac Vicente</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <copyright>© 2026 Isaac Vicente</copyright>
+    <lastBuildDate>Sat, 13 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:56733/pt-br/tags/note-taking/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Sistema de anotações usando Obsidian e o método PARA</title>
+      <link>http://localhost:56733/pt-br/posts/note-taking-using-obsidian/</link>
+      <pubDate>Sat, 13 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:56733/pt-br/posts/note-taking-using-obsidian/</guid>
+      <description>Neste post explico o método PARA e como você pode fazer anotações usando o Obsidian</description>
+      
+    </item>
+    
+  </channel>
+</rss>
