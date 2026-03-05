@@ -4,6 +4,7 @@ date: 2024-07-13
 summary: Neste post explico o método PARA e como você pode fazer anotações usando o Obsidian
 toc: true
 readTime: true
+tags: [note-taking]
 ---
 
 ## Introdução

@@ -15,12 +15,6 @@
   pageRef = "about"
   weight = 30
 
-[[main]]
-  identifier = "search"
-  pre = "search"
-  url = "#"
-  weight = 40
-
 # -- Menu Rodapé --
 
 [[footer]]

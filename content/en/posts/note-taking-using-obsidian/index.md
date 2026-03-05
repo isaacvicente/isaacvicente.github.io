@@ -1,9 +1,10 @@
 ---
 title: Note-taking system using Obsidian and the PARA method
 date: 2024-07-13
-summary: In this blog post I explain the PARA method and how you should take notes using Obsidian
+summary: The PARA method and how you should take notes using Obsidian
 toc: true
 readTime: true
+tags: [note-taking]
 ---
 
 ## Introduction
