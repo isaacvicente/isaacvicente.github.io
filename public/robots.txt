@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://isaacvicente.github.io/sitemap.xml

@@ -1,8 +1,10 @@
 ---
 title: "About"
 description: "A description of Isaac Vicente, a DevOps engineer."
-hideBackToTop: true
-hidePagination: true
+showTableOfContents: false
+showDate: false
+showReadingTime: false
+showWordCount: false
 ---
 
 I'm a Computer Science student at [UFCG](https://www.computacao.ufcg.edu.br/)
@@ -19,9 +21,9 @@ I also love Math and the Human field (History, Philosophy, Sociology, etc).
 
 Check out some of my projects:
 
-* [CS50x-2022](https://github.com/isaacvicente/CS50x-2022) - CS50’s
+* [CS50x-2022](https://github.com/isaacvicente/CS50x-2022) - CS50's
 Introduction to Computer Science
-* [CS50p-2022](https://github.com/isaacvicente/CS50p-2022) - CS50’s
+* [CS50p-2022](https://github.com/isaacvicente/CS50p-2022) - CS50's
 Introduction to Programming with Python
 * [little-container](https://github.com/isaacvicente/little-container) - A vary
 simple container engine that I wrote in Go
@@ -30,4 +32,4 @@ a very useful command line tool
 
 ## Contact
 
-If you want to touch me, send me a message in [Linkedin](https://www.linkedin.com/in/isaac-vicente/).
+If you want to reach me, send me a message on [LinkedIn](https://www.linkedin.com/in/isaac-vicente/).
