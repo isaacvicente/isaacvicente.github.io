@@ -1,0 +1,25 @@
+disabled = false
+languageCode = "pt-br"
+languageName = "Português"
+weight = 2
+title = "Isaac Vicente"
+contentDir = "content/pt-br"
+
+[params]
+  displayName = "BR"
+  isoCode = "pt-br"
+  rtl = false
+  dateFormat = "2 Jan 2006"
+  description = "Um blog sobre DevOps, Cloud e Sistemas Distribuídos"
+  mainSections = ["posts"]
+
+[params.author]
+  name = "Isaac Vicente"
+  # image = "img/author.jpg"
+  headline = "Engenheiro DevOps | CC @ UFCG"
+  bio = "Apaixonado por Linux, sistemas distribuídos e infraestrutura cloud."
+  links = [
+    { github = "https://github.com/isaacvicente" },
+    { linkedin = "https://www.linkedin.com/in/isaac-vicente/" },
+    { email = "mailto:isaac@example.com" },
+  ]
