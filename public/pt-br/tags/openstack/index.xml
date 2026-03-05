@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Openstack on Isaac Vicente</title>
-    <link>http://localhost:56733/pt-br/tags/openstack/</link>
+    <link>http://localhost:1313/pt-br/tags/openstack/</link>
     <description>Recent content in Openstack on Isaac Vicente</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <copyright>© 2026 Isaac Vicente</copyright>
-    <lastBuildDate>Wed, 04 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:56733/pt-br/tags/openstack/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 04 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/pt-br/tags/openstack/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Substituindo nós de controle com Kolla Ansible</title>
-      <link>http://localhost:56733/pt-br/posts/replacing-control-nodes-with-kolla-ansible/</link>
+      <link>http://localhost:1313/pt-br/posts/replacing-control-nodes-with-kolla-ansible/</link>
       <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:56733/pt-br/posts/replacing-control-nodes-with-kolla-ansible/</guid>
+      <guid>http://localhost:1313/pt-br/posts/replacing-control-nodes-with-kolla-ansible/</guid>
       <description>Como adicionar e remover nós de controle numa cloud Openstack utilizando &lt;code&gt;kolla-ansible&lt;/code&gt;</description>
       
     </item>
     
     <item>
       <title>Magnum &#43; Cluster API</title>
-      <link>http://localhost:56733/pt-br/posts/deploy-magnum-with-cluster-api/</link>
+      <link>http://localhost:1313/pt-br/posts/deploy-magnum-with-cluster-api/</link>
       <pubDate>Mon, 15 Sep 2025 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost:56733/pt-br/posts/deploy-magnum-with-cluster-api/</guid>
+      <guid>http://localhost:1313/pt-br/posts/deploy-magnum-with-cluster-api/</guid>
       <description>Nesse post detalho a instalação do Magnum junto ao Cluster API para criação de clusters no Openstack</description>
       
     </item>
