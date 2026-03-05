@@ -248,7 +248,7 @@
     "keywords": ["openstack","cloud","kolla-ansible"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1460"
+    "wordCount": "1513"
   }]
   </script>
 
@@ -705,7 +705,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <time datetime="2026-03-04T00:00:00&#43;00:00">4 mar. 2026</time><span class="px-2 text-primary-500">&middot;</span><span title="Tempo de leitura">7 minutos</span><span class="px-2 text-primary-500">&middot;</span><span class="mb-[2px]">
+      <time datetime="2026-03-04T00:00:00&#43;00:00">4 mar. 2026</time><span class="px-2 text-primary-500">&middot;</span><span title="Tempo de leitura">8 minutos</span><span class="px-2 text-primary-500">&middot;</span><span class="mb-[2px]">
   <span
     id="zen-mode-button"
     class="text-lg hover:text-primary-500"
@@ -1014,7 +1014,7 @@ lições aprendidas.</p>
 <p>O novo nó de controle precisa estar devidamente preparado. Em nosso caso, todos os servidores utilizam <strong>bond</strong> para alta disponibilidade das interfaces de rede. Por isso, foi necessário:</p>
 <ul>
 <li>Instalar <strong>Ubuntu 22.04</strong> na máquina.</li>
-<li>Configurar um bond (agregação de links) e, sobre ele, criar <strong>duas VLANs</strong>:
+<li>Configurar um bond (com duas interfaces) e, sobre ele, criar <strong>duas VLANs</strong>:
 <ul>
 <li>Uma para a comunicação interna dos serviços da nuvem.</li>
 <li>Outra para a comunicação externa (serviços externos, API).</li>
@@ -1138,9 +1138,15 @@ novo). A adição foi feita em etapas, sempre limitando a execução ao grupo
 </h3>
 <p>Após alguma investigação, a solução encontrada foi reiniciar o serviço RabbitMQ
 <strong>em todos os nós de controle</strong>. Isso forçou a reconciliação das filas e a
-sincronização completa do cluster.</p>
-<div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Em cada nó de controle</span>
-</span></span><span class="line"><span class="cl">docker restart rabbitmq</span></span></code></pre></div></div>
+sincronização completa do cluster. Para isso, é necessário realizar um rolling-restart
+para garantir que um próximo container em outro nó só possa ser reiniciando quando o anterior estiver
+funcional.</p>
+<div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Reinicie o RabbitMQ no primeiro nó</span>
+</span></span><span class="line"><span class="cl">docker restart rabbitmq
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Verifique se o container fica HEALTHY</span>
+</span></span><span class="line"><span class="cl">watch <span class="s1">&#39;docker ps -a --filter name=rabbitmq&#39;</span></span></span></code></pre></div></div>
+<p>Quando o RabbitMQ estiver ok no primeiro nó, repita o mesmo procedimento pros próximos.</p>
 <p>Após o restart, o cluster recriou as filas e a criação de VMs voltou a
 funcionar normalmente.</p>
 <hr>

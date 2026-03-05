@@ -248,7 +248,7 @@
     "keywords": ["openstack","cloud","kolla-ansible"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1401"
+    "wordCount": "1463"
   }]
   </script>
 
@@ -1014,7 +1014,7 @@ documentation and lessons learned.</p>
 <p>The new control node needs to be properly prepared. In our case, all servers use <strong>bonding</strong> for high availability of network interfaces. Therefore, it was necessary to:</p>
 <ul>
 <li>Install <strong>Ubuntu 22.04</strong> on the machine.</li>
-<li>Configure bonding (link aggregation) and, on top of it, create <strong>two VLANs</strong>:
+<li>Configure bonding (with two interfaces) and, on top of it, create <strong>two VLANs</strong>:
 <ul>
 <li>One for internal communication of cloud services.</li>
 <li>Another for external communication (external services, API).</li>
@@ -1136,11 +1136,18 @@ one). The addition was done in stages, always limiting execution to the
     </span>
     
 </h3>
-<p>After some investigation, the solution found was to restart the RabbitMQ service
-<strong>on all control nodes</strong>. This forced queue reconciliation and complete
-cluster synchronization.</p>
-<div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># On each control node</span>
-</span></span><span class="line"><span class="cl">docker restart rabbitmq</span></span></code></pre></div></div>
+<p>After some investigation, the solution found was to restart the RabbitMQ
+service on all control nodes. This forced queue reconciliation and complete
+cluster synchronization. For this, it is necessary to perform a rolling restart
+to ensure that a subsequent container on another node can only be restarted
+when the previous one is functional.</p>
+<div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Restart RabbitMQ on the first node</span>
+</span></span><span class="line"><span class="cl">docker restart rabbitmq
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Check if the container is HEALTHY</span>
+</span></span><span class="line"><span class="cl">watch <span class="s1">&#39;docker ps -a --filter name=rabbitmq&#39;</span></span></span></code></pre></div></div>
+<p>When RabbitMQ is working correctly on the first node, repeat the same
+procedure for the next ones.</p>
 <p>After the restart, the cluster recreated the queues, and VM creation returned to
 normal.</p>
 <hr>
