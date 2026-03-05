@@ -30,7 +30,7 @@ documentation and lessons learned.
 The new control node needs to be properly prepared. In our case, all servers use **bonding** for high availability of network interfaces. Therefore, it was necessary to:
 
 - Install **Ubuntu 22.04** on the machine.
-- Configure bonding (link aggregation) and, on top of it, create **two VLANs**:
+- Configure bonding (with two interfaces) and, on top of it, create **two VLANs**:
   - One for internal communication of cloud services.
   - Another for external communication (external services, API).
 - Assign an IP to each VLAN and ensure the new node was reachable via both addresses.
@@ -119,14 +119,22 @@ Analyzing further, we realized that RabbitMQ was in HA (high availability), but 
 
 ### Solution: restart RabbitMQ on all nodes
 
-After some investigation, the solution found was to restart the RabbitMQ service
-**on all control nodes**. This forced queue reconciliation and complete
-cluster synchronization.
+After some investigation, the solution found was to restart the RabbitMQ
+service on all control nodes. This forced queue reconciliation and complete
+cluster synchronization. For this, it is necessary to perform a rolling restart
+to ensure that a subsequent container on another node can only be restarted
+when the previous one is functional.
 
 ```bash
-# On each control node
+# Restart RabbitMQ on the first node
 docker restart rabbitmq
+
+# Check if the container is HEALTHY
+watch 'docker ps -a --filter name=rabbitmq'
 ```
+
+When RabbitMQ is working correctly on the first node, repeat the same
+procedure for the next ones.
 
 After the restart, the cluster recreated the queues, and VM creation returned to
 normal.

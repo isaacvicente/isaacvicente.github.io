@@ -30,7 +30,7 @@ lições aprendidas.
 O novo nó de controle precisa estar devidamente preparado. Em nosso caso, todos os servidores utilizam **bond** para alta disponibilidade das interfaces de rede. Por isso, foi necessário:
 
 - Instalar **Ubuntu 22.04** na máquina.
-- Configurar um bond (agregação de links) e, sobre ele, criar **duas VLANs**:
+- Configurar um bond (com duas interfaces) e, sobre ele, criar **duas VLANs**:
   - Uma para a comunicação interna dos serviços da nuvem.
   - Outra para a comunicação externa (serviços externos, API).
 - Atribuir um IP a cada VLAN e garantir que o novo nó fosse acessível por ambos os endereços.
@@ -121,12 +121,19 @@ Analisando mais a fundo, percebemos que o RabbitMQ estava em HA (alta disponibil
 
 Após alguma investigação, a solução encontrada foi reiniciar o serviço RabbitMQ
 **em todos os nós de controle**. Isso forçou a reconciliação das filas e a
-sincronização completa do cluster.
+sincronização completa do cluster. Para isso, é necessário realizar um rolling-restart
+para garantir que um próximo container em outro nó só possa ser reiniciando quando o anterior estiver
+funcional.
 
 ```bash
-# Em cada nó de controle
+# Reinicie o RabbitMQ no primeiro nó
 docker restart rabbitmq
+
+# Verifique se o container fica HEALTHY
+watch 'docker ps -a --filter name=rabbitmq'
 ```
+
+Quando o RabbitMQ estiver ok no primeiro nó, repita o mesmo procedimento pros próximos.
 
 Após o restart, o cluster recriou as filas e a criação de VMs voltou a
 funcionar normalmente.
