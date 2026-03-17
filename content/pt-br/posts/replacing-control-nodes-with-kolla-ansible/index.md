@@ -191,7 +191,55 @@ openstack network list --agent $dhcp_id -f value -c ID | while read network; do
 done
 ```
 
-### Passo 2: Parar os serviços no host removido
+### Passo 2: Mover os recursos do Cinder
+
+Para atualizar a referência de host os volumes, acesse o host que terá os
+volumes migrados:
+
+```bash
+docker exec -it -u0 cinder_volume cinder-manage volume update_host --currenthost <old_host> --newhost <new_host>
+```
+
+Para atualizar a referência sobre a coluna service_uuid no banco de dados do
+cinder, é necessário rodar o seguinte comando, a partir do host para onde os
+volume foram atualizados (`<new_host>`, nos comandos acima):
+
+```bash
+docker exec -it -u0 cinder_volume cinder-manage volume update_service
+```
+
+Para confirmar, liste os volumes associados ao backend do host a ser removido:
+
+```bash
+cinder list --filters host=<host> --all-tenants 1
+```
+
+Depois de confirmado que não há nenhum volume associado do backend do host a
+ser removido, o próximo passo é desabilitar o serviço do cinder-volume. Assim,
+determine o binário e o host a ser removido:
+
+```bash
+openstack volume service list
+```
+
+Depois desabilite o serviço:
+
+```bash
+openstack volume service set --disable HOST_NAME BINARY_NAME
+```
+
+De maneira semelhante, para remover do serviço completamente, entre em um dos
+hosts de storage (que têm o serviço do cinder-volume) e rode:
+
+> [!WARNING]
+> Esse comando remove a entrada do serviço e seu host da tabela do
+> banco de dados do Cinder, use com cautela.
+
+```bash
+cinder-manage service remove BINARY_NAME HOST_NAME
+```
+
+### Passo 3: Parar os serviços no host removido
 
 Com os recursos realocados, podemos parar todos os containers no host que será removido:
 
@@ -199,11 +247,11 @@ Com os recursos realocados, podemos parar todos os containers no host que será 
 kolla-ansible stop -i multinode --yes-i-really-really-mean-it --limit <host>
 ```
 
-### Passo 3: Remover o host do inventário Ansible
+### Passo 4: Remover o host do inventário Ansible
 
 Edite seu arquivo de inventário (`multinode`) e remova ou comente as linhas referentes ao host que está sendo retirado.
 
-### Passo 4: Reconfigurar os controladores restantes
+### Passo 5: Reconfigurar os controladores restantes
 
 #### **Um cuidado extra com o RabbitMQ**
 
@@ -234,7 +282,7 @@ Agora é necessário reconfigurar os nós de controle restantes para que eles at
 kolla-ansible deploy -i multinode --limit control
 ```
 
-### Passo 5: Limpar os serviços do host removido
+### Passo 6: Limpar os serviços do host removido
 
 Por fim, remova os registros dos agentes e serviços do OpenStack que ainda possam estar visíveis:
 
