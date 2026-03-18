@@ -27,7 +27,9 @@ documentation and lessons learned.
 
 ### Prerequisites
 
-The new control node needs to be properly prepared. In our case, all servers use **bonding** for high availability of network interfaces. Therefore, it was necessary to:
+The new control node needs to be properly prepared. In our case, all servers
+use **bonding** for high availability of network interfaces. Therefore, it was
+necessary to:
 
 - Install **Ubuntu 22.04** on the machine.
 - Configure bonding (with two interfaces) and, on top of it, create **two VLANs**:
@@ -35,7 +37,8 @@ The new control node needs to be properly prepared. In our case, all servers use
   - Another for external communication (external services, API).
 - Assign an IP to each VLAN and ensure the new node was reachable via both addresses.
 
-This step is important because kolla-ansible uses these IPs to configure services and communication between nodes.
+This step is important because kolla-ansible uses these IPs to configure
+services and communication between nodes.
 
 ### Adding the node to the cluster with Kolla-Ansible
 
@@ -54,11 +57,13 @@ kolla-ansible pull -i multinode --limit <new-host>
 kolla-ansible deploy -i multinode --limit control
 ```
 
-After the deployment, the new node should already be participating in the cluster. However, verification is necessary.
+After the deployment, the new node should already be participating in the
+cluster. However, verification is necessary.
 
 ### Post-deployment checks
 
-We validated the main services running on the control nodes: MariaDB (Galera), RabbitMQ, Neutron, and Nova.
+We validated the main services running on the control nodes: MariaDB (Galera),
+RabbitMQ, Neutron, and Nova.
 
 #### **MariaDB (Galera)**
 
@@ -104,7 +109,8 @@ openstack network agent list --host <new-host>
 openstack compute service list --host <new-host>
 ```
 
-Up to this point, everything indicated that the addition had been a success. However, when attempting to create an instance, the error appeared.
+Up to this point, everything indicated that the addition had been a success.
+However, when attempting to create an instance, the error appeared.
 
 ### Error: "missing queue" in RabbitMQ
 
@@ -115,7 +121,12 @@ The reply XXXX failed to send after 60 seconds due to a missing queue
 oslo_messaging.exceptions.MessageUndeliverable
 ```
 
-Analyzing further, we realized that RabbitMQ was in HA (high availability), but the **queues** had not been created on the new node. The queues existing on the other control nodes were not automatically replicated to the new cluster member. When `nova-conductor` tried to send a message to a queue that only existed on the old nodes, the new node couldn't deliver it, resulting in the error.
+Analyzing further, we realized that RabbitMQ was in HA (high availability), but
+the **queues** had not been created on the new node. The queues existing on the
+other control nodes were not automatically replicated to the new cluster
+member. When `nova-conductor` tried to send a message to a queue that only
+existed on the old nodes, the new node couldn't deliver it, resulting in the
+error.
 
 ### Solution: restart RabbitMQ on all nodes
 
@@ -155,7 +166,8 @@ stopping services, and cleaning up registries.
 
 ### Step 1: Move Neutron resources
 
-Before removing the node, it is necessary to reallocate routers and DHCP networks managed by the L3 and DHCP agents residing on the host to be removed.
+Before removing the node, it is necessary to reallocate routers and DHCP
+networks managed by the L3 and DHCP agents residing on the host to be removed.
 
 **For L3 agents (routers):**
 
@@ -194,7 +206,15 @@ done
 
 ### Step 2: Moving Cinder Resources
 
-To update the host reference for the volumes, access the host where the volumes will be migrated:
+> [!WARNING]
+> We use external Ceph for Cinder pools. Because of this, the following
+> solution logically updates (internally in the database) the `host` attribute
+> of the volumes, which does not interfere with the Cinder pools because they
+> are outside the host (in Ceph). If you use any internal backend, such as LVM,
+> this solution may not work.
+
+To update the host reference for the volumes, access the host where the volumes
+will be migrated:
 
 ```bash
 docker exec -it -u0 cinder_volume cinder-manage volume update_host --currenthost <old_host> --newhost <new_host>
@@ -231,9 +251,6 @@ openstack volume service set --disable HOST_NAME BINARY_NAME
 Similarly, to completely remove the service, go to one of the
 storage hosts (that have the cinder-volume service) and run:
 
-> [!WARNING]
-> This command removes the service entry and its host from the Cinder database table, use with caution.
-
 ```bash
 cinder-manage service remove BINARY_NAME HOST_NAME
 ```
@@ -248,13 +265,17 @@ kolla-ansible stop -i multinode --yes-i-really-really-mean-it --limit <host>
 
 ### Step 4: Remove the host from the Ansible inventory
 
-Edit your inventory file (`multinode`) and remove or comment out the lines referring to the host being retired.
+Edit your inventory file (`multinode`) and remove or comment out the lines
+referring to the host being retired.
 
 ### Step 5: Reconfigure the remaining controllers
 
 #### **Extra care with RabbitMQ**
 
-As with addition, RabbitMQ deserves special attention. There are [indications](https://bugs.launchpad.net/kayobe/+bug/2085608) that, even after removing the node from the inventory and reconfiguring, RabbitMQ might still list the removed node in the cluster. This can cause connectivity issues.
+As with addition, RabbitMQ deserves special attention. There are
+[indications](https://bugs.launchpad.net/kayobe/+bug/2085608) that, even after
+removing the node from the inventory and reconfiguring, RabbitMQ might still
+list the removed node in the cluster. This can cause connectivity issues.
 
 Check if the host to be removed is still listed:
 
@@ -262,7 +283,8 @@ Check if the host to be removed is still listed:
 docker exec -it rabbitmq rabbitmqctl cluster_status
 ```
 
-If it is still listed in any way (in our case, the host still appeared under `Disk Nodes`), remove the host:
+If it is still listed in any way (in our case, the host still appeared under
+`Disk Nodes`), remove the host:
 
 ```bash
 docker exec -it rabbitmq rabbitmqctl forget_cluster_node <node-name>
@@ -275,7 +297,8 @@ Verify again that the host has indeed been removed, then proceed.
 
 #### **Deploy**
 
-Now it's necessary to reconfigure the remaining control nodes so they update the cluster state (MariaDB, RabbitMQ, etc.).
+Now it's necessary to reconfigure the remaining control nodes so they update
+the cluster state (MariaDB, RabbitMQ, etc.).
 
 ```bash
 kolla-ansible deploy -i multinode --limit control
@@ -283,7 +306,8 @@ kolla-ansible deploy -i multinode --limit control
 
 ### Step 6: Clean up services from the removed host
 
-Finally, remove the registries of OpenStack agents and services that might still be visible:
+Finally, remove the registries of OpenStack agents and services that might
+still be visible:
 
 ```bash
 # Removes network agents
@@ -299,10 +323,20 @@ done
 
 ## Conclusion
 
-Replacing control nodes in an OpenStack environment with kolla is a well-documented process, but it's not always free of surprises. The main lesson we learned was: **always check the state of RabbitMQ queues after adding a new node** and, when removing, **ensure the node has been completely forgotten by the messaging cluster**.
+Replacing control nodes in an OpenStack environment with kolla is a
+well-documented process, but it's not always free of surprises. The main lesson
+we learned was: **always check the state of RabbitMQ queues after adding a new
+node** and, when removing, **ensure the node has been completely forgotten by
+the messaging cluster**.
 
-A simple queue listing (`rabbitmqctl list_queues`) or cluster check (`rabbitmqctl cluster_status`) before and after could have indicated the problem earlier.
+A simple queue listing (`rabbitmqctl list_queues`) or cluster check
+(`rabbitmqctl cluster_status`) before and after could have indicated the
+problem earlier.
 
-Fortunately, the solutions were simple (although they involve restarting critical services). In production environments, it's advisable to plan a maintenance window for this type of operation.
+Fortunately, the solutions were simple (although they involve restarting
+critical services). In production environments, it's advisable to plan a
+maintenance window for this type of operation.
 
-In the end, the entire process was much smoother than we thought, and this really shows how fascinating the [kolla-ansible](https://opendev.org/openstack/kolla-ansible) project is.
+In the end, the entire process was much smoother than we thought, and this
+really shows how fascinating the
+[kolla-ansible](https://opendev.org/openstack/kolla-ansible) project is.

@@ -27,15 +27,19 @@ lições aprendidas.
 
 ### Pré-requisitos
 
-O novo nó de controle precisa estar devidamente preparado. Em nosso caso, todos os servidores utilizam **bond** para alta disponibilidade das interfaces de rede. Por isso, foi necessário:
+O novo nó de controle precisa estar devidamente preparado. Em nosso caso, todos
+os servidores utilizam **bond** para alta disponibilidade das interfaces de
+rede. Por isso, foi necessário:
 
 - Instalar **Ubuntu 22.04** na máquina.
 - Configurar um bond (com duas interfaces) e, sobre ele, criar **duas VLANs**:
   - Uma para a comunicação interna dos serviços da nuvem.
   - Outra para a comunicação externa (serviços externos, API).
-- Atribuir um IP a cada VLAN e garantir que o novo nó fosse acessível por ambos os endereços.
+- Atribuir um IP a cada VLAN e garantir que o novo nó fosse acessível por ambos
+os endereços.
 
-Essa etapa é importante pois o kolla-ansible utiliza esses IPs para configurar os serviços e a comunicação entre os nós.
+Essa etapa é importante pois o kolla-ansible utiliza esses IPs para configurar
+os serviços e a comunicação entre os nós.
 
 ### Adicionando o nó ao cluster com Kolla-Ansible
 
@@ -54,11 +58,13 @@ kolla-ansible pull -i multinode --limit <novo-host>
 kolla-ansible deploy -i multinode --limit control
 ```
 
-Após o deploy, o novo nó já deveria estar participando do cluster. Mas, é preciso verificar.
+Após o deploy, o novo nó já deveria estar participando do cluster. Mas, é
+preciso verificar.
 
 ### Verificações pós-deploy
 
-Validamos os principais serviços que rodam nos nós de controle: MariaDB (Galera), RabbitMQ, Neutron e Nova.
+Validamos os principais serviços que rodam nos nós de controle: MariaDB
+(Galera), RabbitMQ, Neutron e Nova.
 
 #### **MariaDB (Galera)**
 
@@ -83,7 +89,8 @@ docker exec -t mariadb mysql --user root --password=$ROOT_PASS -e "SHOW STATUS L
 
 #### **RabbitMQ**
 
-O RabbitMQ é o barramento de mensagens do OpenStack. Verificamos o status do cluster e a conectividade:
+O RabbitMQ é o barramento de mensagens do OpenStack. Verificamos o status do
+cluster e a conectividade:
 
 ```bash
 # Status do cluster RabbitMQ
@@ -104,7 +111,8 @@ openstack network agent list --host <novo-host>
 openstack compute service list --host <novo-host>
 ```
 
-Até aí, tudo indicava que a adição havia sido um sucesso. Porém, ao tentar criar uma instância, o erro apareceu.
+Até aí, tudo indicava que a adição havia sido um sucesso. Porém, ao tentar
+criar uma instância, o erro apareceu.
 
 ### Erro: "missing queue" no RabbitMQ
 
@@ -115,15 +123,20 @@ The reply XXXX failed to send after 60 seconds due to a missing queue
 oslo_messaging.exceptions.MessageUndeliverable
 ```
 
-Analisando mais a fundo, percebemos que o RabbitMQ estava em HA (alta disponibilidade), mas as **filas** não haviam sido criadas no novo nó. As filas existentes nos outros nós de controle não foram replicadas automaticamente para o novo membro do cluster. Quando o `nova-conductor` tentou enviar uma mensagem para uma fila que só existia nos nós antigos, o novo nó não conseguiu entregá-la, resultando no erro.
+Analisando mais a fundo, percebemos que o RabbitMQ estava em HA (alta
+disponibilidade), mas as **filas** não haviam sido criadas no novo nó. As filas
+existentes nos outros nós de controle não foram replicadas automaticamente para
+o novo membro do cluster. Quando o `nova-conductor` tentou enviar uma mensagem
+para uma fila que só existia nos nós antigos, o novo nó não conseguiu
+entregá-la, resultando no erro.
 
 ### Solução: restart do RabbitMQ em todos os nós
 
 Após alguma investigação, a solução encontrada foi reiniciar o serviço RabbitMQ
 **em todos os nós de controle**. Isso forçou a reconciliação das filas e a
-sincronização completa do cluster. Para isso, é necessário realizar um rolling-restart
-para garantir que um próximo container em outro nó só possa ser reiniciando quando o anterior estiver
-funcional.
+sincronização completa do cluster. Para isso, é necessário realizar um
+rolling-restart para garantir que um próximo container em outro nó só possa ser
+reiniciando quando o anterior estiver funcional.
 
 ```bash
 # Reinicie o RabbitMQ no primeiro nó
@@ -154,7 +167,8 @@ parar serviços e limpar os registros.
 
 ### Passo 1: Mover recursos do Neutron
 
-Antes de remover o nó, é necessário realocar os roteadores e redes DHCP gerenciados pelos agentes L3 e DHCP que estão no host a ser removido.
+Antes de remover o nó, é necessário realocar os roteadores e redes DHCP
+gerenciados pelos agentes L3 e DHCP que estão no host a ser removido.
 
 **Para agentes L3 (roteadores):**
 
@@ -192,6 +206,13 @@ done
 ```
 
 ### Passo 2: Mover os recursos do Cinder
+
+> [!WARNING]
+> Nós utilizamos Ceph externo para as pools do Cinder. Por conta disso, a
+> solução a seguir atualiza logicamente (internamente no banco de dados) o
+> atributo de `host` dos volumes, o que não interfere nas pools do Cinder pois
+> estão fora do host (no Ceph). Se você usa qualquer backend interno, como o
+> LVM, essa solução pode não funcionar.
 
 Para atualizar a referência de host os volumes, acesse o host que terá os
 volumes migrados:
@@ -231,10 +252,6 @@ openstack volume service set --disable HOST_NAME BINARY_NAME
 De maneira semelhante, para remover do serviço completamente, entre em um dos
 hosts de storage (que têm o serviço do cinder-volume) e rode:
 
-> [!WARNING]
-> Esse comando remove a entrada do serviço e seu host da tabela do
-> banco de dados do Cinder, use com cautela.
-
 ```bash
 cinder-manage service remove BINARY_NAME HOST_NAME
 ```
@@ -249,13 +266,17 @@ kolla-ansible stop -i multinode --yes-i-really-really-mean-it --limit <host>
 
 ### Passo 4: Remover o host do inventário Ansible
 
-Edite seu arquivo de inventário (`multinode`) e remova ou comente as linhas referentes ao host que está sendo retirado.
+Edite seu arquivo de inventário (`multinode`) e remova ou comente as linhas
+referentes ao host que está sendo retirado.
 
 ### Passo 5: Reconfigurar os controladores restantes
 
 #### **Um cuidado extra com o RabbitMQ**
 
-Assim como na adição, o RabbitMQ merece atenção especial. Há [indícios](https://bugs.launchpad.net/kayobe/+bug/2085608)  de que, mesmo após a remoção do nó do inventário e a reconfiguração, o RabbitMQ pode continuar listando o nó removido no cluster. Isso pode causar problemas de conectividade.
+Assim como na adição, o RabbitMQ merece atenção especial. Há
+[indícios](https://bugs.launchpad.net/kayobe/+bug/2085608)  de que, mesmo após
+a remoção do nó do inventário e a reconfiguração, o RabbitMQ pode continuar
+listando o nó removido no cluster. Isso pode causar problemas de conectividade.
 
 Verifique se o host a ser removido ainda é listado:
 
@@ -263,7 +284,8 @@ Verifique se o host a ser removido ainda é listado:
 docker exec -it rabbitmq rabbitmqctl cluster_status
 ```
 
-Se ainda for listado de alguma forma (no nosso caso o host ainda aparecia em `Disk Nodes`), remova o host:
+Se ainda for listado de alguma forma (no nosso caso o host ainda aparecia em
+`Disk Nodes`), remova o host:
 
 ```bash
 docker exec -it rabbitmq rabbitmqctl forget_cluster_node <node-name>
@@ -276,7 +298,8 @@ Verifique novamente se o host foi de fato removido, pra então prosseguir.
 
 #### **Deploy**
 
-Agora é necessário reconfigurar os nós de controle restantes para que eles atualizem o estado dos clusters (MariaDB, RabbitMQ, etc.).
+Agora é necessário reconfigurar os nós de controle restantes para que eles
+atualizem o estado dos clusters (MariaDB, RabbitMQ, etc.).
 
 ```bash
 kolla-ansible deploy -i multinode --limit control
@@ -284,7 +307,8 @@ kolla-ansible deploy -i multinode --limit control
 
 ### Passo 6: Limpar os serviços do host removido
 
-Por fim, remova os registros dos agentes e serviços do OpenStack que ainda possam estar visíveis:
+Por fim, remova os registros dos agentes e serviços do OpenStack que ainda
+possam estar visíveis:
 
 ```bash
 # Remove agentes de rede
@@ -300,10 +324,18 @@ done
 
 ## Conclusão
 
-A substituição de nós de controle em um ambiente Openstack com kolla é um processo bem documentado, mas nem sempre é livre de surpresas. A principal lição que tiramos foi: **sempre verifique o estado das filas do RabbitMQ após adicionar um novo nó** e, ao remover, **certifique-se de que o nó foi completamente esquecido pelo cluster de mensageria**.
+A substituição de nós de controle em um ambiente Openstack com kolla é um
+processo bem documentado, mas nem sempre é livre de surpresas. A principal
+lição que tiramos foi: **sempre verifique o estado das filas do RabbitMQ após
+adicionar um novo nó** e, ao remover, **certifique-se de que o nó foi
+completamente esquecido pelo cluster de mensageria**.
 
-Uma simples listagem de filas (`rabbitmqctl list_queues`) ou verificação do cluster (`rabbitmqctl cluster_status`) antes e depois poderia ter indicado o problema mais cedo.
+Uma simples listagem de filas (`rabbitmqctl list_queues`) ou verificação do
+cluster (`rabbitmqctl cluster_status`) antes e depois poderia ter indicado o
+problema mais cedo.
 
-Felizmente, as soluções foram simples (embora envolvam reinicialização de serviços críticos). Em ambientes de produção, é recomendável planejar uma janela de manutenção para esse tipo de operação.
+Felizmente, as soluções foram simples (embora envolvam reinicialização de
+serviços críticos). Em ambientes de produção, é recomendável planejar uma
+janela de manutenção para esse tipo de operação.
 
 No fim, todo o processo foi bem tranquilo do que pensávamos, e isso realmente mostra o quão fascinante é o projeto [kolla-ansible](https://opendev.org/openstack/kolla-ansible).
