@@ -1,7 +1,7 @@
 ---
 title: Magnum + Cluster API
 date: 2025-09-15
-summary: How to install Magnum with the Cluster API to create clusters in Openstack.
+summary: How to install Magnum with Cluster API to create clusters in Openstack
 toc: true
 readTime: true
 tags: [openstack, cloud, magnum, kubernetes]
