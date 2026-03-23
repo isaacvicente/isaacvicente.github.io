@@ -248,13 +248,6 @@ Then disable the service:
 openstack volume service set --disable HOST_NAME BINARY_NAME
 ```
 
-Similarly, to completely remove the service, go to one of the
-storage hosts (that have the cinder-volume service) and run:
-
-```bash
-cinder-manage service remove BINARY_NAME HOST_NAME
-```
-
 ### Step 3: Stop services on the removed host
 
 With resources reallocated, we can stop all containers on the host to be removed:
@@ -306,7 +299,7 @@ kolla-ansible deploy -i multinode --limit control
 
 ### Step 6: Clean up services from the removed host
 
-Finally, remove the registries of OpenStack agents and services that might
+Remove the registries of OpenStack agents and services that might
 still be visible:
 
 ```bash
@@ -319,6 +312,18 @@ done
 openstack compute service list --os-compute-api-version 2.53 --host <host> -f value -c ID | while read id; do
   openstack compute service delete --os-compute-api-version 2.53 $id
 done
+```
+
+List the Cinder services to be removed:
+
+```bash
+openstack volume service list --host <host>
+```
+
+Go to one of the storage hosts (that have the `cinder-volume` service) and run:
+
+```bash
+cinder-manage service remove BINARY_NAME HOST_NAME
 ```
 
 ## Conclusion

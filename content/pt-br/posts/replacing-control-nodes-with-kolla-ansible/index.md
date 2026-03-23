@@ -307,7 +307,7 @@ kolla-ansible deploy -i multinode --limit control
 
 ### Passo 6: Limpar os serviços do host removido
 
-Por fim, remova os registros dos agentes e serviços do OpenStack que ainda
+Remova os registros dos agentes e serviços do OpenStack que ainda
 possam estar visíveis:
 
 ```bash
@@ -320,6 +320,18 @@ done
 openstack compute service list --os-compute-api-version 2.53 --host <host> -f value -c ID | while read id; do
   openstack compute service delete --os-compute-api-version 2.53 $id
 done
+```
+
+Liste os serviços do Cinder a serem removidos:
+
+```bash
+openstack volume service list --host <host>
+```
+
+Entre em um dos nós de storage (que contém o serviço `cinder-volume`) e rode:
+
+```bash
+cinder-manage service remove BINARY_NAME HOST_NAME
 ```
 
 ## Conclusão
