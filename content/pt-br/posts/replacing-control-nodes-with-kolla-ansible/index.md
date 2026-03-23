@@ -249,13 +249,6 @@ Depois desabilite o serviço:
 openstack volume service set --disable HOST_NAME BINARY_NAME
 ```
 
-De maneira semelhante, para remover do serviço completamente, entre em um dos
-hosts de storage (que têm o serviço do cinder-volume) e rode:
-
-```bash
-cinder-manage service remove BINARY_NAME HOST_NAME
-```
-
 ### Passo 3: Parar os serviços no host removido
 
 Com os recursos realocados, podemos parar todos os containers no host que será removido:
