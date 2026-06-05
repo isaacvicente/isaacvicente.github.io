@@ -13,8 +13,8 @@ Quero que pense nessa pergunta enquanto lê o resto do texto, acho importante
 ter essa coisa incomodando no fundo da cabeça.
 
 De fato, essa é uma pergunta difícil de responder, e acredito que poucos
-conseguem responder essa pergunta assim que lêem. O mesmo vale pra mim.
-objetivos são coisas que levam, nós, humanos, a realizar coisas, seja
+conseguem responder essa pergunta assim que leem. O mesmo vale pra mim.
+Objetivos são coisas que levam, nós, humanos, a realizar coisas, seja
 o objetivo apenas uma motivação distante ou uma necessidade.
 
 Para mim, no momento da escrita, não consigo responder essa pergunta. Veja, já
